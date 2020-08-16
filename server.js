@@ -22,6 +22,7 @@ app.use("/inventory", inventory_routes);
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  poolSize: 100,
 });
 const connection = mongoose.connection;
 connection.once("open", function () {
