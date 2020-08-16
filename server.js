@@ -30,9 +30,7 @@ connection.once("open", function () {
 app.listen(PORT, function () {
   console.log("Server is running on Port: " + PORT);
 });
-inventory_routes.route("/").get(function (req, res) {
-      res.json("Deployment Success");
-});
+
 // csv download of master
 
 inventory_routes.route("/downloadmst/:option").get(function (req, res) {
