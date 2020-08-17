@@ -135,11 +135,20 @@ inventory_routes.route("/purchaseorders").get(function (req, res) {
   });
 });
 
-// Get an Item By _ID
+// Get an Item By _ID from MST
 
 inventory_routes.route("/:id").get(function (req, res) {
   let id = req.params.id;
   Inventory.findById(id, function (err, mst) {
+    res.json(mst);
+  });
+});
+
+// Get an Item By _ID from PurchaseOrders
+
+inventory_routes.route("/purchaseorders/:id").get(function (req, res) {
+  let id = req.params.id;
+  PurchaseOrders.findById(id, function (err, mst) {
     res.json(mst);
   });
 });
@@ -194,6 +203,24 @@ inventory_routes.route("/update/:id").post(function (req, res) {
     mst.current_stock = req.body.current_stock;
     mst.category = req.body.category;
     mst.required_stock = req.body.required_stock;
+    mst
+      .save()
+      .then((mst) => {
+        res.json("mst item updated!");
+      })
+      .catch((err) => {
+        res.status(400).send("mst item Update not possible");
+      });
+  });
+});
+
+//Update operation for PurchaseOrders
+
+inventory_routes.route("/purchaseorders/update/:id").post(function (req, res) {
+  PurchaseOrders.findById(req.params.id, function (err, mst) {
+    if (!mst) res.status(404).send("mst item is not found");
+    else mst.order_status = req.body.order_status;
+
     mst
       .save()
       .then((mst) => {
