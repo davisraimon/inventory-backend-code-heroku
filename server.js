@@ -10,11 +10,17 @@ const inventory_routes = express.Router();
 const PORT = process.env.PORT || 4000;
 let Inventory = require("./inventory.model");
 let PurchaseOrders = require("./purchase-orders.model");
+var path = require("path");
 const stripe = require("stripe")(process.env.STRPE_KEY);
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/inventory", inventory_routes);
+app.use(express.static(path.join(__dirname, "build")));
+
+app.get("/*", (req, res) => {
+  res.sendFile(path.join(__dirname, "build", "index.html"));
+});
 
 // mongoose.connect("mongodb://127.0.0.1:27017/inventory_mst", {
 //   useNewUrlParser: true,
